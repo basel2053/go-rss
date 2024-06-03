@@ -34,6 +34,11 @@ func main() {
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
+	v1Router := chi.NewRouter()
+	v1Router.Get("/healthz", handlerReadiness)
+	v1Router.Get("/err", handlerErr)
+	// /v1/ready is full path for above handler
+	router.Mount("/v1", v1Router)
 	server := &http.Server{
 		Handler: router,
 		Addr:    ":" + port,
