@@ -41,7 +41,7 @@ func scrapeFeed(db *database.Queries, wg *sync.WaitGroup, feed database.Feed) {
 		log.Println("Error fetching feed", err)
 		return
 	}
-	for _, item := range rssFeed.Channel.item {
+	for _, item := range rssFeed.Channel.Item {
 		description := sql.NullString{}
 		if item.Description != "" {
 			description.String = item.Description
@@ -68,5 +68,5 @@ func scrapeFeed(db *database.Queries, wg *sync.WaitGroup, feed database.Feed) {
 			log.Printf("failed to create post:%s", err)
 		}
 	}
-	log.Printf("Feed %s collected %v posts found", feed.Name, len(rssFeed.Channel.item))
+	log.Printf("Feed %s collected %v posts found", feed.Name, len(rssFeed.Channel.Item))
 }
