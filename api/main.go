@@ -58,10 +58,15 @@ func main() {
 	v1Router.Get("/healthz", handlerReadiness)
 	v1Router.Get("/err", handlerErr)
 
-	// User
+	// Users
 	v1Router.Post("/users", apiCfg.handlerCreateUser)
-	v1Router.Get("/users", apiCfg.handlerGetUser)
-	// /v1/ready is full path for above handler
+	v1Router.Get("/users", apiCfg.middlewareAuth(apiCfg.handlerGetUser))
+
+	// Feeds
+	v1Router.Get("/feeds", apiCfg.handlerGetFeeds)
+	v1Router.Post("/feeds", apiCfg.middlewareAuth(apiCfg.handlerCreateFeed))
+
+	// /v1/healthz is full path for above handler
 	router.Mount("/v1", v1Router)
 	server := &http.Server{
 		Handler: router,
